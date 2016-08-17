@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Shiro Spring 配置文件 -->
+	
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroDbRealm"/>
+		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	
+	
+	<bean id="shiro" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"/>
+		
+		<property name="loginUrl" value="/login.action"/>
+		<property name="successUrl" value="/home.action"/>
+		<property name="unauthorizedUrl" value="/404.jsp"/>
+		<property name="filterChainDefinitions">
+			<value>
+				
+				/save.action = anon
+				/footer.jsp = anon
+				/nav.jsp =anon
+				/staticRes/** = anon
+				/** = authc
+			</value>
+		</property>
+	</bean> 
+	
+	
+	
+	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" /> 
+	
+	
+	
+</beans>
